@@ -5,6 +5,8 @@ const schema = require('./graphql/schema')
 
 const app = express()
 
+require('./mongodb/connect')
+
 app.use('/graphql', graphqlHTTP({
     schema,
     graphiql: true
