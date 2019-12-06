@@ -51,6 +51,31 @@ const query = new GraphQLObjectType({
     }
 })
 
+// Mutation
+const mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addTodo: {
+            type: todoType,
+            args: {
+                id: {type: GraphQLID},
+                title: {type: GraphQLString},
+                completed: {type: GraphQLBoolean}
+            },
+            resolve(parent, args) {
+                const newTodo = {
+                    id: args.id,
+                    title: args.title,
+                    completed: args.completed
+                }
+                todos.push(newTodo)
+                return newTodo
+            }
+        }
+    }
+
+})
 module.exports = new GraphQLSchema({
-    query
+    query,
+    mutation
 })
