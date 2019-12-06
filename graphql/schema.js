@@ -1,5 +1,7 @@
 const graph = require('graphql')
 
+const TodoModel = require('../mongodb/model')
+
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -9,24 +11,6 @@ const {
     GraphQLSchema
 } = graph
 
-// 临时假数据
-let todos = [
-    {
-        id: 1,
-        title: 'xxx',
-        completed: true
-    },
-    {
-        id: 2,
-        title: 'yyy',
-        completed: false
-    },
-    {
-        id: 3,
-        title: 'zzz',
-        completed: true
-    },
-]
 
 // 创建todo类型
 const todoType = new GraphQLObjectType({
@@ -45,7 +29,7 @@ const query = new GraphQLObjectType({
         todos: {
             type: new GraphQLList(todoType),
             resolve(parent, args) {
-                return todos
+                return TodoModel.find()
             }
         }
     }
@@ -58,18 +42,14 @@ const mutation = new GraphQLObjectType({
         addTodo: {
             type: todoType,
             args: {
-                id: {type: GraphQLID},
                 title: {type: GraphQLString},
                 completed: {type: GraphQLBoolean}
             },
             resolve(parent, args) {
-                const newTodo = {
-                    id: args.id,
+                return TodoModel.create({
                     title: args.title,
                     completed: args.completed
-                }
-                todos.push(newTodo)
-                return newTodo
+                })
             }
         }
     }
