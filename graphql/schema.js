@@ -8,7 +8,8 @@ const {
     GraphQLString,
     GraphQLBoolean,
     GraphQLList,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLInt
 } = graph
 
 
@@ -19,6 +20,16 @@ const todoType = new GraphQLObjectType({
         id: {type: GraphQLID},
         title: {type: GraphQLString},
         completed: {type: GraphQLBoolean}
+    })
+})
+
+// 创建updateResult类型
+const updateResultType = new GraphQLObjectType({
+    name: 'updateResult',
+    fields: () => ({
+        n: {type: GraphQLInt},
+        nModified: {type: GraphQLInt},
+        ok: {type: GraphQLInt}
     })
 })
 
@@ -51,7 +62,18 @@ const mutation = new GraphQLObjectType({
                     completed: args.completed
                 })
             }
-        }
+        },
+        toggleAllCompleted: {
+            type: updateResultType,
+            args: {
+                completed: {type: GraphQLBoolean}
+            },
+            resolve(parent, args) {
+                return TodoModel.updateMany({}, {
+                    completed: args.completed
+                })
+            }
+        },
     }
 
 })
