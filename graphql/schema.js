@@ -74,6 +74,15 @@ const mutation = new GraphQLObjectType({
                 })
             }
         },
+        delTodo: {
+            type: todoType,
+            args: {
+                id: {type: GraphQLID}
+            },
+            resolve(parent, args) {
+                return TodoModel.findOneAndDelete({_id: args.id})
+            }
+        },
     }
 
 })
