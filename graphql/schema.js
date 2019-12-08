@@ -93,6 +93,16 @@ const mutation = new GraphQLObjectType({
                 return TodoModel.updateOne({_id: args.id}, {completed: args.completed})
             }
         },
+        updateTitle: {
+            type: updateResultType,
+            args: {
+                id: {type: GraphQLID},
+                title: {type: GraphQLString}
+            },
+            resolve(parent, args) {
+                return TodoModel.updateOne({_id: args.id}, {title: args.title})
+            }
+        },
     }
 
 })
