@@ -83,6 +83,16 @@ const mutation = new GraphQLObjectType({
                 return TodoModel.findOneAndDelete({_id: args.id})
             }
         },
+        toggleCompleted: {
+            type: updateResultType,
+            args: {
+                id: {type: GraphQLID},
+                completed: {type: GraphQLBoolean}
+            },
+            resolve(parent, args) {
+                return TodoModel.updateOne({_id: args.id}, {completed: args.completed})
+            }
+        },
     }
 
 })
