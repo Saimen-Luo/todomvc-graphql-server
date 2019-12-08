@@ -33,6 +33,15 @@ const updateResultType = new GraphQLObjectType({
     })
 })
 
+// 创建deleteManyResult类型
+const deleteManyResultType = new GraphQLObjectType({
+    name: 'deleteManyResult',
+    fields: () => ({
+        n: {type: GraphQLInt},
+        ok: {type: GraphQLInt}
+    })
+})
+
 // RootQuery
 const query = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -101,6 +110,12 @@ const mutation = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 return TodoModel.updateOne({_id: args.id}, {title: args.title})
+            }
+        },
+        clearCompleted: {
+            type: deleteManyResultType,
+            resolve(parent, args) {
+                return TodoModel.deleteMany({completed: true})
             }
         },
     }
